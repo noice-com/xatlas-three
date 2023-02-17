@@ -29,6 +29,10 @@ export interface PackOptions{
     bruteForce?: boolean,
     texelsPerUnit?: number
 }
+export interface PackResult{
+    geometry: BufferGeometry,
+    oldIndexes: Uint16Array
+}
 
 export abstract class BaseUVUnwrapper{
     private xAtlas: XAtlasWebWorker | XAtlasJS;
@@ -83,7 +87,7 @@ export abstract class BaseUVUnwrapper{
      * @param outputUv - Attribute to write the output uv to
      * @param inputUv - Attribute to write the input uv to (if any)
      */
-    public async packAtlas(nodeList: BufferGeometry[], outputUv: 'uv'|'uv2' = 'uv2', inputUv: 'uv'|'uv2' = 'uv'): Promise<BufferGeometry[]>{
+    public async packAtlas(nodeList: BufferGeometry[], outputUv: 'uv'|'uv2' = 'uv2', inputUv: 'uv'|'uv2' = 'uv'): Promise<PackResult[]>{
         if(!this._libraryLoaded) {
             console.warn('xatlas-three: library not loaded')
             return [];
@@ -127,7 +131,7 @@ export abstract class BaseUVUnwrapper{
         if(this.timeUnwrap) console.time(tag);
         let meshes = await this.xAtlas.api.generateAtlas(this.chartOptions, this.packOptions, true);
         if(this.timeUnwrap) console.timeEnd(tag);
-        let ret = [];
+        let ret: PackResult[] = [];
         for(let m of meshes){
             /**
              * @type {Mesh}
@@ -154,7 +158,7 @@ export abstract class BaseUVUnwrapper{
             if(m.vertex.coords&&outputUv!==inputUv) mesh.setAttribute(inputUv, new this.THREE.BufferAttribute(m.vertex.coords, 2, false));
             if(m.index) mesh.setIndex(new this.THREE.BufferAttribute(m.index, 1, false));
 
-            ret.push(mesh);
+            ret.push({geometry:mesh, oldIndexes:m.oldIndexes});
         }
 
         await this.xAtlas.api.destroyAtlas();
