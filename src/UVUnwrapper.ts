@@ -1,4 +1,4 @@
-import type {BufferGeometry, Mesh, BufferAttribute} from "three";
+import {BufferGeometry, BufferAttribute, InterleavedBufferAttribute, GLBufferAttribute} from "three";
 import type {XAtlasWebWorker} from "./XAtlasWebWorker";
 import type {XAtlasJS} from "./XAtlasJS";
 
@@ -117,6 +117,11 @@ export abstract class BaseUVUnwrapper{
             // if (unwrap === false) continue;
 
             meshAdded.push(uuid);
+            if (attributes.position instanceof GLBufferAttribute || attributes.uv instanceof GLBufferAttribute || attributes.normal instanceof GLBufferAttribute) {
+                console.warn("xatlas-three: Attribute type not supported: ", mesh)
+                continue;
+            }
+
             if(!index || !attributes.position || attributes.position!.itemSize !== 3){
                 console.warn("xatlas-three: Geometry not supported: ", mesh)
                 continue;
