@@ -47,7 +47,7 @@ export abstract class BaseUVUnwrapper{
      * @param logProgress - Logs the unwrapping progress
      */
     constructor(
-        public THREE: { BufferAttribute: Class<BufferAttribute> },
+        public THREE: { bufferAttribute: Class<BufferAttribute> },
         public packOptions: PackOptions = {
             resolution: 2048,
         },
@@ -157,11 +157,11 @@ export abstract class BaseUVUnwrapper{
             // if(mesh.getIndex())
             //     mesh.setIndex(null);
 
-            if(m.vertex.vertices) mesh.setAttribute('position', new this.THREE.BufferAttribute(m.vertex.vertices, 3, false));
-            if(m.vertex.normals) mesh.setAttribute('normal', new this.THREE.BufferAttribute(m.vertex.normals, 3, true));
-            if(m.vertex.coords1) mesh.setAttribute(outputUv, new this.THREE.BufferAttribute(m.vertex.coords1, 2, false));
-            if(m.vertex.coords&&outputUv!==inputUv) mesh.setAttribute(inputUv, new this.THREE.BufferAttribute(m.vertex.coords, 2, false));
-            if(m.index) mesh.setIndex(new this.THREE.BufferAttribute(m.index, 1, false));
+            if(m.vertex.vertices) mesh.setAttribute('position', new this.THREE.bufferAttribute(m.vertex.vertices, 3, false));
+            if(m.vertex.normals) mesh.setAttribute('normal', new this.THREE.bufferAttribute(m.vertex.normals, 3, true));
+            if(m.vertex.coords1) mesh.setAttribute(outputUv, new this.THREE.bufferAttribute(m.vertex.coords1, 2, false));
+            if(m.vertex.coords&&outputUv!==inputUv) mesh.setAttribute(inputUv, new this.THREE.bufferAttribute(m.vertex.coords, 2, false));
+            if(m.index) mesh.setIndex(new this.THREE.bufferAttribute(m.index, 1, false));
 
             ret.push({geometry:mesh, oldIndexes:m.oldIndexes});
         }
