@@ -158,7 +158,7 @@ export abstract class BaseUVUnwrapper{
             //     mesh.setIndex(null);
 
             if(m.vertex.vertices) mesh.setAttribute('position', new this.THREE.bufferAttribute(m.vertex.vertices, 3, false));
-            if(m.vertex.normals) mesh.setAttribute('normal', new this.THREE.bufferAttribute(m.vertex.normals, 3, true));
+            if(this.useNormals && m.vertex.normals) mesh.setAttribute('normal', new this.THREE.bufferAttribute(m.vertex.normals, 3, true));
             if(m.vertex.coords1) mesh.setAttribute(outputUv, new this.THREE.bufferAttribute(m.vertex.coords1, 2, false));
             if(m.vertex.coords&&outputUv!==inputUv) mesh.setAttribute(inputUv, new this.THREE.bufferAttribute(m.vertex.coords, 2, false));
             if(m.index) mesh.setIndex(new this.THREE.bufferAttribute(m.index, 1, false));
