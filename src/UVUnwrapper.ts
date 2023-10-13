@@ -87,7 +87,7 @@ export abstract class BaseUVUnwrapper{
      * @param outputUv - Attribute to write the output uv to
      * @param inputUv - Attribute to write the input uv to (if any)
      */
-    public async packAtlas(nodeList: BufferGeometry[], outputUv: 'uv'|'uv2' = 'uv2', inputUv: 'uv'|'uv2' = 'uv'): Promise<PackResult[]>{
+    public async packAtlas(nodeList: BufferGeometry[], outputUv: string  = 'uv2', inputUv: 'uv'|'uv1'|'uv2'|'uv3' = 'uv'): Promise<PackResult[]>{
         if(!this._libraryLoaded) {
             console.warn('xatlas-three: library not loaded')
             return [];
@@ -160,7 +160,7 @@ export abstract class BaseUVUnwrapper{
             if(m.vertex.vertices) mesh.setAttribute('position', new this.THREE.bufferAttribute(m.vertex.vertices, 3, false));
             if(this.useNormals && m.vertex.normals) mesh.setAttribute('normal', new this.THREE.bufferAttribute(m.vertex.normals, 3, true));
             if(m.vertex.coords1) mesh.setAttribute(outputUv, new this.THREE.bufferAttribute(m.vertex.coords1, 2, false));
-            if(m.vertex.coords&&outputUv!==inputUv) mesh.setAttribute(inputUv, new this.THREE.bufferAttribute(m.vertex.coords, 2, false));
+            if(m.vertex.coords) mesh.setAttribute(inputUv, new this.THREE.bufferAttribute(m.vertex.coords, 2, false));
             if(m.index) mesh.setIndex(new this.THREE.bufferAttribute(m.index, 1, false));
 
             ret.push({geometry:mesh, oldIndexes:m.oldIndexes});
